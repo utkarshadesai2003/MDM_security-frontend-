@@ -63,7 +63,7 @@ export default function LoginPage() {
     };
   }, []);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setErrors({});
     const newErrors: Errors = {};
@@ -81,44 +81,10 @@ export default function LoginPage() {
 
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
-      try {
-        const res = await fetch(
-          "https://mdm-security-backend-v1-498807929429.us-central1.run.app/auth/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-          }
-        );
-        let data: { message?: string; token?: string } = {};
-        try {
-          data = await res.json();
-        } catch (jsonError) {
-          setErrors({ general: "Invalid response from server." });
-          setLoading(false);
-          return;
-        }
-        // Log backend response for debugging
-        console.log("Login API response:", data);
-
-        if (res.ok) {
-          window.location.replace(
-            "https://mdm-security-admin-498807929429.us-central1.run.app"
-          );
-          return;
-        } else {
-          setErrors({
-            general: data.message || "Login failed. Please try again.",
-          });
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-        setErrors({ general: "Network error. Please try again." });
-      } finally {
+      window.setTimeout(() => {
+        router.push("/Loginsucces");
         setLoading(false);
-      }
+      }, 500);
     }
   };
 

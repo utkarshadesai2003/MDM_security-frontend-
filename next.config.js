@@ -1,17 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  output: 'standalone',
+  output: 'export',
+  trailingSlash: true,
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   images: {
     domains: ['images.unsplash.com'],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/submit',
-        destination: 'https://mdm-security-backend-498807929429.us-central1.run.app/organizations/submit',
-      },
-    ];
+    unoptimized: true,
   },
 }
 

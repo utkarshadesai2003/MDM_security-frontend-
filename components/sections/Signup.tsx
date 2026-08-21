@@ -26,7 +26,7 @@ const SignUpPage: React.FC = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const contactNumberRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setApiError("");
     const newErrors: Errors = {};
@@ -45,50 +45,10 @@ const SignUpPage: React.FC = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
-      try {
-        const requestBody = {
-          full_name: fullName,
-          email,
-          password,
-          contact_num: contactNumber,
-          project_name: projectName,
-          project_size: projectSize,
-        };
-        const res = await fetch(
-          "https://mdm-security-backend-v1-498807929429.us-central1.run.app/auth/signup",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-        let data;
-        try {
-          data = await res.json();
-        } catch (jsonError) {
-          setApiError("Invalid response from server.");
-          return;
-        }
-        if (res.ok) {
-          // Remove all state resets and formRef.current.reset()
-          // Redirect to login page after successful signup
-          router.push("/Login");
-        } else {
-          console.error("Signup error response:", data);
-          setApiError(
-            data.message ||
-              data.error ||
-              JSON.stringify(data) ||
-              "Signup failed. Please try again."
-          );
-        }
-      } catch (error) {
-        setApiError("Network error. Please try again.");
-      } finally {
+      window.setTimeout(() => {
+        router.push("/Login");
         setLoading(false);
-      }
+      }, 500);
     }
   };
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

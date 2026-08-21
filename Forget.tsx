@@ -20,7 +20,7 @@ const Forgotpassword: React.FC = () => {
     setShowPassword(false);
   }, []);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const newErrors: { email?: string; newPassword?: string } = {};
 
@@ -35,26 +35,7 @@ const Forgotpassword: React.FC = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const res = await fetch(
-          `https://mdm-security-backend-498807929429.us-central1.run.app/auth/reset-password?email=${encodeURIComponent(
-            email
-          )}&new_password=${encodeURIComponent(newPassword)}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        if (res.ok) {
-          router.push("/Login");
-        } else {
-          const data = await res.json();
-          alert(data.message || "Failed to reset password");
-        }
-      } catch (error) {
-        alert("Network error. Please try again.");
-      }
+      router.push("/Login");
     }
   };
 
